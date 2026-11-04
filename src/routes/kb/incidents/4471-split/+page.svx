@@ -37,12 +37,12 @@ These come from the ticket export of 2026-10-04 and are computed at render time 
 
 ## Outcome of each cause
 
-The export has no resolution data. These outcomes come from a course moderator's explanation, not from the export, and the page records them as reported.
+The export has no resolution data, so these dispositions are not in it. They are recorded here as they were given to us.
 
 | cause | reports | issue | outcome |
 |---|---|---|---|
-| `parser` | 379 | [#1](https://github.com/apolesny/mega-s01e03-what-it-shows/issues/1) | closed as completed: the parser is fixed |
-| `hint` | 33 | [#2](https://github.com/apolesny/mega-s01e03-what-it-shows/issues/2) | closed as not planned: booking-v3 is being retired, so its form hint will not be fixed |
+| `parser` | 379 | [#1](https://github.com/apolesny/mega-s01e03-what-it-shows/issues/1) | fixed; closed as completed |
+| `hint` | 33 | [#2](https://github.com/apolesny/mega-s01e03-what-it-shows/issues/2) | booking-v3 retired, so its form hint will not be fixed; closed as not planned |
 
 The five one-day reports stay inside the parser's 379. They have no issue of their own.
 
