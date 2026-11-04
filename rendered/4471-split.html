@@ -1,0 +1,26 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>#4471 split · three problems, not one · support kb</title>
+<style>body{margin:0;background:#fbfaf7;color:#1d1d1b;font:16px/1.6 system-ui,sans-serif}.kb{max-width:760px;margin:0 auto;padding:2rem 16px 4rem}table{border-collapse:collapse;width:100%;margin:1rem 0;font-size:.92rem}th,td{border-bottom:1px solid #e3e0d8;padding:.35rem .5rem;text-align:left}code{font-family:ui-monospace,monospace}a{color:#2f6f5e}.meta{color:#6b6a66;font-size:.85rem}.callout{background:#eef5f2;padding:.6rem 1rem;border-radius:6px}.stamp{font:.85rem ui-monospace,monospace;color:#6b6a66}.stamp b{color:#2f6f5e}.wrong td{background:#fbeee6}footer{margin-top:3rem;color:#6b6a66;font-size:.8rem;border-top:1px solid #e3e0d8;padding-top:1rem}</style></head><body><div class="kb">
+<header><a href="/kb">support desk · kb</a><h1>#4471 split · three problems, not one</h1><p class="meta">owner <b>support desk</b> · draft · reviewed 2026-11-04</p></header><main>
+<p><a href="/kb/incidents/4471">#4471</a> was merged as one known issue. It holds <b>three different problems</b>. The merge followed <a href="/kb/decisions/0001-dedupe-by-subject">decision 0001</a>: same subject line, same ticket. Nobody read the bodies, and the cause of a report does not depend on its subject.</p>
+<p class="callout">Not one issue, one fix. Fixing the parser closes most of #4471, not all of it.</p>
+<h2>The three problems</h2>
+<table><thead><tr><th>problem</th><th>reports</th></tr></thead><tbody>
+<tr><td>parser reads dates month first</td><td>374</td></tr>
+<tr><td>booking-v3 form hint says MM/DD/YYYY</td><td>33</td></tr>
+<tr><td>invite lands one day off</td><td>5</td></tr>
+<tr><td><b>total (unique reports in #4471)</b></td><td><b>412</b></td></tr></tbody></table>
+<ol><li><b>Parser reads dates month first.</b> Tenants write the day first (every tenant on file does), and the shared parser flips day and month. Reported by 11 tenants, from the app, email and the form on booking-v2.</li>
+<li><b>booking-v3 form hint.</b> The form prints <code>MM/DD/YYYY</code> under the date field, so people at day-first tenants type month first. A different bug with a different fix (the hint, not the parser). It only happens through the form, at the three tenants on booking-v3: alder.physio, copper.studio, pale.harbour.</li>
+<li><b>One day off.</b> The reports say "Tuesday vs Monday", "only June", "Lisbon got Tuesday, Toronto got Monday", "the invite arrived before I booked". The month is right and the day is off by one. That points at time zones or clock handling, not date parsing. The cause is not confirmed.</li></ol>
+<h2>Intake tags are not the cause</h2>
+<p>Intake tags each report from the reporter's browser, as a guess. The tag and the real cause (from tenant and form, see <code>causes.ts</code>) disagree often: 23 parser reports are tagged <code>hint</code> and 15 hint reports are tagged <code>parser</code>. Count by cause, not by tag.</p>
+<p><b>412</b> reports merged into #4471 · <b>2</b> causes</p>
+<table><thead><tr><th>cause</th><th>reports</th><th>tagged as</th><th>tenants</th><th>seen</th><th></th></tr></thead><tbody>
+<tr><td><code>parser</code></td><td>379</td><td>parser ×356 · hint ×23</td><td>11</td><td>2026-04-01 → 2026-10-04</td><td>#4471</td></tr>
+<tr class="wrong"><td><code>hint</code></td><td>33</td><td>hint ×18 · parser ×15</td><td>3</td><td>2026-04-17 → 2026-09-22</td><td>not this ticket — no ticket of its own</td></tr></tbody></table>
+<p class="meta">5 reports read as a one-day move; filed under <code>parser</code> by tenant. The desk's cause logic folds them into <code>parser</code> (379); the first table takes them out (374).</p>
+<h2>Counting</h2>
+<p>The ticket export comes in overlapping pages: 427 rows, 15 repeated ids, <b>412 unique reports</b>. The three counts add up to 412.</p>
+<h2>What to do</h2><ul><li>Open one ticket per problem and link each to its count (done in the repo for this page).</li><li>Stop merging by subject during incidents like this. Read the body, or at least check the tenant and channel.</li><li>Change the status of <a href="/kb/incidents/4471">#4471</a> from <i>known</i>: it is not one issue.</li></ul>
+<p class="stamp">desk ref <b>DR-8EP5-7TJP</b></p></main>
+<footer>Pages are written by people. Tables and charts are built from data at render time.</footer></div></body></html>

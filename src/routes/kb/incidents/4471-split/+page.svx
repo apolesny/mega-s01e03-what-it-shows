@@ -1,0 +1,51 @@
+---
+layout: runbook
+title: '#4471 split · three problems, not one'
+owner: support desk
+status: draft
+reviewed: 2026-11-04
+signature: v1.eyJzdWIiOiIzODY1IiwiYXVkIjoiY2hhbGxlbmdlOndoYXQtaXQtc2hvd3MiLCJpYXQiOjE3OTM3ODg2OTEsImV4cCI6MTc5Mzg3NTA5MX0.lG2WHgHPGrfYp4BoLNQUBVD4QNcQ66zMn3LFYkJBkX4
+---
+
+<script>
+  import ProblemCounts from '#lib/kb/ProblemCounts.svelte';
+  import CauseTable from '#lib/kb/CauseTable.svelte';
+  import Callout from '#lib/kb/Callout.svelte';
+  import RenderStamp from '#lib/kb/RenderStamp.svelte';
+</script>
+
+[#4471](/kb/incidents/4471) was merged as one known issue. It holds **three different problems**.
+The merge followed [decision 0001](/kb/decisions/0001-dedupe-by-subject): same subject line, same ticket.
+Nobody read the bodies, and the cause of a report does not depend on its subject.
+
+<Callout>
+Not one issue, one fix. Fixing the parser closes most of #4471, not all of it.
+</Callout>
+
+## The three problems
+
+<ProblemCounts ticket={4471} />
+
+1. **Parser reads dates month first.** Tenants write the day first (every tenant on file does), and the shared parser flips day and month. Reported by 11 tenants, from the app, email and the form on booking-v2.
+2. **booking-v3 form hint.** The form prints `MM/DD/YYYY` under the date field, so people at day-first tenants type month first. This is a different bug with a different fix (the hint, not the parser). It only happens through the form, at the three tenants on booking-v3: alder.physio, copper.studio, pale.harbour.
+3. **One day off.** The reports say "Tuesday vs Monday", "only June", "Lisbon got Tuesday, Toronto got Monday", "the invite arrived before I booked". The month is right and the day is off by one. That points at time zones or clock handling, not date parsing. The cause is not confirmed.
+
+## Intake tags are not the cause
+
+Intake tags each report from the reporter's browser, as a guess. The tag and the real cause (from tenant and form, see `causes.ts`) disagree often: some parser reports are tagged `hint` and some hint reports are tagged `parser`. Count by cause, not by tag.
+
+<CauseTable ticket={4471} />
+
+The table above is the desk's own cause logic. It folds the five one-day reports into `parser` (the tenant's locale puts them there), so it shows 379 and 33. The first table takes those five out.
+
+## Counting
+
+The ticket export comes in overlapping pages: 427 rows, 15 repeated ids, **412 unique reports**. The three counts add up to 412.
+
+## What to do
+
+- Open one ticket per problem and link each to its count (done in the repo for this page).
+- Stop merging by subject during incidents like this. Read the body, or at least check the tenant and channel.
+- Change the status of [#4471](/kb/incidents/4471) from *known*: it is not one issue.
+
+<RenderStamp {signature} />
