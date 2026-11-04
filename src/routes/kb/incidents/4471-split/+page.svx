@@ -18,7 +18,7 @@ signature: v1.eyJzdWIiOiIzODY1IiwiYXVkIjoiY2hhbGxlbmdlOndoYXQtaXQtc2hvd3MiLCJpYX
 This page sets out what the data shows, what we recommend and what has been done.
 
 <Callout>
-Not one issue, one fix. Fixing the parser does not close the form-hint reports.
+Not one issue, one fix. Two causes, two issues, two different outcomes.
 </Callout>
 
 ## Observed facts
@@ -35,18 +35,28 @@ These come from the ticket export of 2026-10-04 and are computed at render time 
 
 <CauseTable ticket={4471} />
 
+## Outcome of each cause
+
+The export has no resolution data. These outcomes come from a course moderator's explanation, not from the export, and the page records them as reported.
+
+| cause | reports | issue | outcome |
+|---|---|---|---|
+| `parser` | 379 | [#1](https://github.com/apolesny/mega-s01e03-what-it-shows/issues/1) | closed as completed: the parser is fixed |
+| `hint` | 33 | [#2](https://github.com/apolesny/mega-s01e03-what-it-shows/issues/2) | closed as not planned: booking-v3 is being retired, so its form hint will not be fixed |
+
+The five one-day reports stay inside the parser's 379. They have no issue of their own.
+
 ## Recommendations
 
 These are suggestions for the desk. Nobody has done them yet.
 
-- Treat the two causes as two issues, because they need different fixes.
-- Look at the five one-day reports separately from the month flips when the parser fix is tested.
 - Do not merge by subject alone during an incident (see [decision 0001](/kb/decisions/0001-dedupe-by-subject)). Check the tenant and the way in.
 - Change the status of [#4471](/kb/incidents/4471) from *known*. This page does not edit it, and it does not edit decision 0001.
 
 ## Completed actions
 
-- One GitHub issue per cause was filed in the public repo for this page: [#1 parser, 379 reports](https://github.com/apolesny/mega-s01e03-what-it-shows/issues/1) and [#2 hint, 33 reports](https://github.com/apolesny/mega-s01e03-what-it-shows/issues/2). The count in each issue is the desk's count from the table above. Both issues are closed as of this page's date; closing them does not mean the causes are fixed.
+- One GitHub issue per cause was filed in the public repo for this page: #1 (parser) and #2 (hint). Each carries the desk's count from the table above.
+- #1 was closed as completed and #2 as not planned, as set out in the outcome table.
 - This page was added to the kb. No other page, and no decision record, was changed.
 
 <RenderStamp {signature} />
