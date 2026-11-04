@@ -1,6 +1,6 @@
 ---
 layout: runbook
-title: '#4471 split · three problems, not one'
+title: '#4471 split · two causes'
 owner: support desk
 status: draft
 reviewed: 2026-11-04
@@ -14,38 +14,39 @@ signature: v1.eyJzdWIiOiIzODY1IiwiYXVkIjoiY2hhbGxlbmdlOndoYXQtaXQtc2hvd3MiLCJpYX
   import RenderStamp from '#lib/kb/RenderStamp.svelte';
 </script>
 
-[#4471](/kb/incidents/4471) was merged as one known issue. It holds **three different problems**.
-The merge followed [decision 0001](/kb/decisions/0001-dedupe-by-subject): same subject line, same ticket.
-Nobody read the bodies, and the cause of a report does not depend on its subject.
+[#4471](/kb/incidents/4471) is filed as one known issue. The reports merged into it have **two causes**.
+This page sets out what the data shows, what we recommend and what has been done.
 
 <Callout>
-Not one issue, one fix. Fixing the parser closes most of #4471, not all of it.
+Not one issue, one fix. Fixing the parser does not close the form-hint reports.
 </Callout>
 
-## The three problems
+## Observed facts
+
+These come from the ticket export of 2026-10-04 and are computed at render time from the data in `src/lib/data`. The cause of a report comes from its tenant and form (`causes.ts`), not from the subject line or the intake tag.
 
 <ProblemCounts ticket={4471} />
 
-1. **Parser reads dates month first.** Tenants write the day first (every tenant on file does), and the shared parser flips day and month. Reported by 11 tenants, from the app, email and the form on booking-v2.
-2. **booking-v3 form hint.** The form prints `MM/DD/YYYY` under the date field, so people at day-first tenants type month first. This is a different bug with a different fix (the hint, not the parser). It only happens through the form, at the three tenants on booking-v3: alder.physio, copper.studio, pale.harbour.
-3. **One day off.** The reports say "Tuesday vs Monday", "only June", "Lisbon got Tuesday, Toronto got Monday", "the invite arrived before I booked". The month is right and the day is off by one. That points at time zones or clock handling, not date parsing. The cause is not confirmed.
-
-## Intake tags are not the cause
-
-Intake tags each report from the reporter's browser, as a guess. The tag and the real cause (from tenant and form, see `causes.ts`) disagree often: some parser reports are tagged `hint` and some hint reports are tagged `parser`. Count by cause, not by tag.
+- **`parser` (the shared parser reads dates month first).** Every tenant on file writes the day first, so day and month come out flipped. Seen at all 11 tenants, from the app, email and the booking-v2 form.
+- **`hint` (the booking-v3 form hint).** The form prints `MM/DD/YYYY` under the date field, so people at day-first tenants type month first. Seen only through the form at the three booking-v3 tenants: alder.physio, copper.studio and pale.harbour. This is a different bug with a different fix.
+- **The five one-day reports** (R-41202, R-41209, R-41236, R-41344, R-41620) are listed in `desk-notes.json`. They say the day is off by one, not that month and day are flipped. The desk files them under `parser` by tenant, so they are **part of the 379**. They are not an extra count and not a third problem on this page. Their cause is unconfirmed; the reports mention time zones and clock handling.
+- **Intake tags are a guess from the reporter's browser and disagree with the cause.** Some `parser` reports are tagged `hint`, and some `hint` reports are tagged `parser`.
+- **Overlapping export pages.** The export has 427 rows with 15 repeated ids, so 412 unique reports.
 
 <CauseTable ticket={4471} />
 
-The table above is the desk's own cause logic. It folds the five one-day reports into `parser` (the tenant's locale puts them there), so it shows 379 and 33. The first table takes those five out.
+## Recommendations
 
-## Counting
+These are suggestions for the desk. Nobody has done them yet.
 
-The ticket export comes in overlapping pages: 427 rows, 15 repeated ids, **412 unique reports**. The three counts add up to 412.
+- Treat the two causes as two issues, because they need different fixes.
+- Look at the five one-day reports separately from the month flips when the parser fix is tested.
+- Do not merge by subject alone during an incident (see [decision 0001](/kb/decisions/0001-dedupe-by-subject)). Check the tenant and the way in.
+- Change the status of [#4471](/kb/incidents/4471) from *known*. This page does not edit it, and it does not edit decision 0001.
 
-## What to do
+## Completed actions
 
-- Open one ticket per problem and link each to its count (done in the repo for this page).
-- Stop merging by subject during incidents like this. Read the body, or at least check the tenant and channel.
-- Change the status of [#4471](/kb/incidents/4471) from *known*: it is not one issue.
+- One GitHub issue per cause was filed in the public repo for this page: [#1 parser, 379 reports](https://github.com/apolesny/mega-s01e03-what-it-shows/issues/1) and [#2 hint, 33 reports](https://github.com/apolesny/mega-s01e03-what-it-shows/issues/2). The count in each issue is the desk's count from the table above. Both issues are closed as of this page's date; closing them does not mean the causes are fixed.
+- This page was added to the kb. No other page, and no decision record, was changed.
 
 <RenderStamp {signature} />
